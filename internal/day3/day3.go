@@ -1,4 +1,4 @@
-package main
+package day3
 
 import (
 	"fmt"
@@ -21,9 +21,9 @@ func isEnabled(dos, donts [][]int, n int) bool {
 	return (do_i > dont_i) || (dont_i == 0)
 }
 
-func day3() {
+func Run() {
 	re := regexp.MustCompile(`mul\(([0-9]{1,3}),([0-9]{1,3})\)`)
-	s, err := os.ReadFile("./day3/input")
+	s, err := os.ReadFile("../internal/day3/input")
 	if err != nil {
 		panic(err)
 	}

@@ -1,4 +1,4 @@
-package main
+package day2
 
 import (
 	"bufio"
@@ -79,12 +79,12 @@ func isSafe2(input string, drop int) bool {
 	return true
 }
 
-func day2() {
+func Run() {
 	//fmt.Printf("1 2 7 8 9 - %v\n", anySafe("1 2 7 8 9"))
 	//fmt.Printf("1 3 2 4 5 - %v\n", anySafe("1 3 2 4 5"))
 	//fmt.Printf("10 1 2 4 5 - %v\n", anySafe("10 1 2 4 5"))
 
-	file, _ := os.Open("day2/input")
+	file, _ := os.Open("../internal/day2/input")
 	defer file.Close()
 
 	reader := bufio.NewReader(file)

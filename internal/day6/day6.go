@@ -1,6 +1,7 @@
-package main
+package day6
 
 import (
+	"aoc/internal/util"
 	"bufio"
 	"os"
 	"strings"
@@ -10,30 +11,30 @@ func inArea(r, c, N int) bool {
 	return (r >= 0) && (r < N) && (c >= 0) && (c < N)
 }
 
-func rotate90(d direction) direction {
+func rotate90(d util.Direction) util.Direction {
 	switch d {
-	case N:
-		return E
-	case E:
-		return S
-	case S:
-		return W
-	case W:
-		return N
+	case util.N:
+		return util.E
+	case util.E:
+		return util.S
+	case util.S:
+		return util.W
+	case util.W:
+		return util.N
 	}
-	return N //shouldn;t hit
+	return util.N //shouldn;t hit
 }
 
-func move(area []string, size, r, c int, d direction) (int, int, direction) {
+func move(area []string, size, r, c int, d util.Direction) (int, int, util.Direction) {
 	nr, nc := 0, 0
 	switch d {
-	case N:
+	case util.N:
 		nr, nc = r-1, c
-	case E:
+	case util.E:
 		nr, nc = r, c+1
-	case S:
+	case util.S:
 		nr, nc = r+1, c
-	case W:
+	case util.W:
 		nr, nc = r, c-1
 	}
 
@@ -52,8 +53,8 @@ type Point struct {
 }
 
 // return the total number of spaces walked before leaving area
-// ri,ci = starting location, di = starting direction
-func patrol1(area []string, ri, ci int, di direction) (int, []Point) {
+// ri,ci = starting location, di = starting util.Direction
+func patrol1(area []string, ri, ci int, di util.Direction) (int, []Point) {
 	s := len(area)
 	d := di
 	visited := map[Point]bool{{ri, ci}: true}
@@ -71,12 +72,12 @@ func patrol1(area []string, ri, ci int, di direction) (int, []Point) {
 
 type PointDir struct {
 	x, y int
-	d    direction
+	d    util.Direction
 }
 
-func isLoopPath(area []string, ri, ci int, di direction) bool {
+func isLoopPath(area []string, ri, ci int, di util.Direction) bool {
 	//we are in a loop if we come back to the same point
-	//and traveling in same direction
+	//and traveling in same util.Direction
 	s := len(area)
 	d := di
 	visited := map[PointDir]bool{}
@@ -103,7 +104,7 @@ func removeObstacle(area []string, r, c int) {
 	area[r] = string(u)
 }
 
-func patrol2(area []string, path []Point, ri, ci int, di direction) int {
+func patrol2(area []string, path []Point, ri, ci int, di util.Direction) int {
 	sum := 0
 	for _, p := range path {
 		if (p.x == ri) && (p.y == ci) {
@@ -118,9 +119,9 @@ func patrol2(area []string, path []Point, ri, ci int, di direction) int {
 	return sum
 }
 
-func day6() {
+func Run() {
 
-	file, _ := os.Open("day6/input")
+	file, _ := os.Open("../internal/day6/input")
 	defer file.Close()
 
 	reader := bufio.NewReader(file)
@@ -142,8 +143,8 @@ func day6() {
 		i++
 	}
 	println(r, ":", c)
-	cnt, path := patrol1(area, r, c, N)
+	cnt, path := patrol1(area, r, c, util.N)
 	println(cnt)
-	println(patrol2(area, path, r, c, N))
+	println(patrol2(area, path, r, c, util.N))
 
 }

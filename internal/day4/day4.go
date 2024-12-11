@@ -1,4 +1,4 @@
-package main
+package day4
 
 import (
 	"bufio"
@@ -81,9 +81,9 @@ func checkWord(puzzle []string, word []byte, r, c int, d direction) bool {
 	return false
 }
 
-func day4() {
+func Run() {
 
-	file, _ := os.Open("day4/input")
+	file, _ := os.Open("../internal/day4/input")
 	defer file.Close()
 
 	reader := bufio.NewReader(file)

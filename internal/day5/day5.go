@@ -1,4 +1,4 @@
-package main
+package day5
 
 import (
 	"bufio"
@@ -88,9 +88,9 @@ func rulesToArray(rules Rules, max int) [][]int {
 	return ret
 }
 
-func day5() {
+func Run() {
 
-	file, _ := os.Open("day5/input")
+	file, _ := os.Open("../internal/day5/input")
 	defer file.Close()
 
 	reader := bufio.NewReader(file)

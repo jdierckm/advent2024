@@ -1,4 +1,4 @@
-package main
+package day1
 
 import (
 	"bufio"
@@ -29,8 +29,8 @@ func rcounts(sorted []int) map[int]int {
 	return cnts
 }
 
-func day1() {
-	file, _ := os.Open("day1/day1-input")
+func Run() {
+	file, _ := os.Open("../internal/day1/day1-input")
 	defer file.Close()
 
 	reader := bufio.NewReader(file)

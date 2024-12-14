@@ -60,17 +60,7 @@ func initOps(opSet []operator) [][]operator {
 	return ret
 }
 
-func addAnotherOrig(ops [][]operator, opSet []operator) [][]operator {
-	ret := [][]operator{}
-	for _, v := range ops {
-		for _, o := range opSet {
-			t := append(v, o)
-			ret = append(ret, t)
-		}
-	}
-	return ret
-}
-
+// optimization - cache these by lenght as they don't change
 func addAnother(ops [][]operator, opSet []operator) [][]operator {
 	l := len(opSet)
 	ret := make([][]operator, l*len(ops))

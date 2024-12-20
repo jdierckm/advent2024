@@ -123,6 +123,30 @@ func compact2(d []int, slots []slot, fileLocs []file) {
 	}
 }
 
+func compact2_2(slots []slot, fileLocs []file) []file {
+	ret := make([]file, len(fileLocs))
+	copy(ret, fileLocs)
+
+	for i, f := range ret {
+		idx := getSlot(slots, f.len)
+		if idx > 0 {
+			ret[i] = file{len: f.len, loc: idx, num: f.num}
+		}
+	}
+	return ret
+}
+
+func checksum2(files []file) int {
+
+	s := 0
+	for _, f := range files {
+		for i := 0; i < f.len; i++ {
+			s += f.num * (f.loc + i)
+		}
+	}
+	return s
+}
+
 func checksum(compact []int) int64 {
 	var s int64
 	s = 0
@@ -154,6 +178,9 @@ func Run() {
 	fileLocs := fileLocs(dsk)
 	//fmt.Printf("files: %v\n", fileLocs)
 	compact2(dsk, slots, fileLocs)
-	//fmt.Printf("map: %v\n", dsk)
 	println(checksum(dsk))
+
+	// c2 := compact2_2(slots, fileLocs)
+	// fmt.Printf("c2: %v\n", c2[:20])
+	// println(checksum2(c2))
 }

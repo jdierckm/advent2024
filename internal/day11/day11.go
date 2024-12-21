@@ -2,7 +2,7 @@ package day11
 
 import (
 	"bufio"
-	"fmt"
+	"container/list"
 	"os"
 	"slices"
 	"strconv"
@@ -19,6 +19,14 @@ func parse(l string) []int {
 
 	}
 	return ret
+}
+
+func toList(stones []int) *list.List {
+	l := list.New()
+	for _, v := range stones {
+		l.PushBack(v)
+	}
+	return l
 }
 
 func digits(n int) int {
@@ -54,18 +62,49 @@ func blink(stones []int) []int {
 	return stones
 }
 
+func blink2(stones *list.List) {
+	for se := stones.Front(); se != nil; se = se.Next() {
+		s := se.Value.(int)
+		if s == 0 {
+			se.Value = 1
+		} else {
+			if isEven, n1, n2 := split(s); isEven {
+				stones.InsertBefore(n1, se)
+				h := stones.InsertBefore(n2, se)
+				stones.Remove(se)
+				se = h
+				//stones = slices.Replace(stones, i, i+1, n1, n2)
+			} else {
+				se.Value = s * 2024
+			}
+		}
+
+	}
+}
+
+func printStones(i int, s *list.List) {
+	print(i, ": ")
+	for s := s.Front(); s != nil; s = s.Next() {
+		print(s.Value.(int), " ")
+	}
+	println()
+}
+
 func Run() {
-	file, _ := os.Open("../internal/day11/input")
+	file, _ := os.Open("../internal/day11/test")
 	defer file.Close()
 
 	reader := bufio.NewReader(file)
 	line, _ := reader.ReadString('\n')
 	stones := parse(line)
-	fmt.Printf("%v\n", stones)
+	sl := toList(stones)
+	printStones(0, sl)
+
 	for i := 0; i < 75; i++ {
-		stones = blink(stones)
-		//fmt.Printf("%v\n", stones)
-		println(i, ": ", len(stones))
+		blink2(sl)
+		//printStones(i+1, sl)
+		println(i, ": ", sl.Len())
 	}
+	println(sl.Len())
 
 }

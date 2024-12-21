@@ -20,65 +20,11 @@ type Point struct {
 	r, c int
 }
 
-type Path struct {
-	pts []Point
-}
-
-func NewPath(pt Point) *Path {
-	return &Path{pts: []Point{pt}}
-}
-
-type Paths struct {
-	paths []*Path
-}
-
-// add point to all path
-func (p *Paths) extend(pt Point) {
-	if p.paths == nil {
-		p.paths = []*Path{}
-	}
-	p.paths = append(p.paths, NewPath(pt))
-}
-
-func (p *Path) Add(pt Point) {
-	if p.pts == nil {
-		p.pts = []Point{}
-	}
-	p.pts = append(p.pts, pt)
-}
-
 func inRange(N, r, c int) bool {
 	if (r >= 0) && (r < N) && (c >= 0) && (c < N) {
 		return true
 	}
 	return false
-}
-
-func discover(topo [][]int, start Point, curPaths []*Path) []*Path {
-	ret := make([]*Path, len(curPaths))
-	copy(ret, curPaths)
-
-	N := len(topo)
-	v := topo[start.r][start.c]
-	for i := -1; i < 2; i += 2 {
-		for j := -1; j < 2; j += 2 {
-			r, c := start.r+i, start.c+j
-			if !inRange(N, start.r+i, start.c+j) {
-				continue
-			}
-			if topo[r][c] == v+1 {
-				//add new point to all current paths
-				for _, p := range ret {
-					p.Add(Point{r, c})
-				}
-				if topo[r][c] == 9 {
-					return ret
-				}
-			}
-
-		}
-	}
-	return ret
 }
 
 func disc(topo [][]int, start Point) []Point {
@@ -108,12 +54,14 @@ func disc(topo [][]int, start Point) []Point {
 	return ret
 }
 
-func discAll(topo [][]int) int {
+func discAll(topo [][]int) (int, int) {
 	sum := 0
+	sum2 := 0
 	for r, v := range topo {
 		for c, _ := range v {
 			if topo[r][c] == 0 {
 				pts := disc(topo, Point{r, c})
+				sum2 += len(pts)
 				s := util.NewSet[Point]()
 				for _, p := range pts {
 					s.Add(p)
@@ -122,7 +70,7 @@ func discAll(topo [][]int) int {
 			}
 		}
 	}
-	return sum
+	return sum, sum2
 }
 
 func Run() {

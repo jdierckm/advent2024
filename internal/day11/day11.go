@@ -3,6 +3,7 @@ package day11
 import (
 	"bufio"
 	"container/list"
+	"math"
 	"os"
 	"slices"
 	"strconv"
@@ -41,6 +42,26 @@ func split(n int) (bool, int, int) {
 	}
 	n1, _ := strconv.Atoi(s[:l/2])
 	n2, _ := strconv.Atoi(s[l/2:])
+	return true, n1, n2
+}
+
+func split2(n int) (bool, int, int) {
+	l := 1
+	d := 1
+	for {
+		r := n / d
+		if r < 10 {
+			break
+		}
+		d = d * 10
+		l++
+	}
+	if (l % 2) == 1 {
+		return false, 0, 0
+	}
+	p := int(math.Pow10(l / 2))
+	n1 := n / p
+	n2 := n - n1*p
 	return true, n1, n2
 }
 
@@ -91,6 +112,9 @@ func printStones(i int, s *list.List) {
 }
 
 func Run() {
+	b, n1, n2 := split2(253000)
+	println(b, n1, n2)
+
 	file, _ := os.Open("../internal/day11/test")
 	defer file.Close()
 
@@ -100,7 +124,7 @@ func Run() {
 	sl := toList(stones)
 	printStones(0, sl)
 
-	for i := 0; i < 75; i++ {
+	for i := 0; i < 25; i++ {
 		blink2(sl)
 		//printStones(i+1, sl)
 		println(i, ": ", sl.Len())

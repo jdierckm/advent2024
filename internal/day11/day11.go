@@ -91,9 +91,9 @@ func blink2(stones *list.List) {
 		} else {
 			if isEven, n1, n2 := split(s); isEven {
 				stones.InsertBefore(n1, se)
-				h := stones.InsertBefore(n2, se)
-				stones.Remove(se)
-				se = h
+				//h := stones.InsertBefore(n2, se)
+				//stones.Remove(se)
+				se.Value = n2
 				//stones = slices.Replace(stones, i, i+1, n1, n2)
 			} else {
 				se.Value = s * 2024
@@ -111,6 +111,10 @@ func printStones(i int, s *list.List) {
 	println()
 }
 
+func blinkNum(n, iteration int) int {
+	return 0
+}
+
 func Run() {
 	b, n1, n2 := split2(253000)
 	println(b, n1, n2)
@@ -124,7 +128,7 @@ func Run() {
 	sl := toList(stones)
 	printStones(0, sl)
 
-	for i := 0; i < 25; i++ {
+	for i := 0; i < 75; i++ {
 		blink2(sl)
 		//printStones(i+1, sl)
 		println(i, ": ", sl.Len())
